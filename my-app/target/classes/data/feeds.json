@@ -1,0 +1,12 @@
+[
+  {
+    "label": "lmgral",
+    "url": "https://lmdiario.com.ar/default/rss/general.xml",
+    "type": "xml"
+  },
+  {
+    "label": "lmnoti",
+    "url": "https://lmdiario.com.ar/default/rss/noticias.xml",
+    "type": "xml"
+  }
+]
