@@ -1,7 +1,9 @@
 package namedEntities;
 
+import java.io.Serializable;
+
 // Posible idea para topic si la hacemos clase y cada topico una instancia de la clase
-public class Topics {
+public class Topics implements Serializable{
     private String name;
 
     public Topics(String name) {

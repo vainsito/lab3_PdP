@@ -1,5 +1,6 @@
 namedEntities/Category.class
 feed/Article.class
+utils/NamedEntitiesUtils$1.class
 utils/FeedsData.class
 App.class
 utils/NamedEntitiesUtils.class

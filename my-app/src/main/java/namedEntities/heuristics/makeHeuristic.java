@@ -5,8 +5,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.io.Serializable;
 
-public class makeHeuristic implements Heuristic {
+public class makeHeuristic implements Heuristic, Serializable {
 
     public JavaRDD<String> extractCandidates(JavaRDD<String> lines, String heuristic) {
         return lines.flatMap(line -> {

@@ -8,9 +8,9 @@ import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import java.io.Serializable;
 
-/*
-public class JSONParser {
+public class JSONParser implements Serializable{
 
     static public List<FeedsData> parseJsonFeedsData(String jsonFilePath) throws IOException {
         String jsonData = new String(Files.readAllBytes(Paths.get(jsonFilePath)));
@@ -27,8 +27,9 @@ public class JSONParser {
         return feedsList;
     }
 
-}*/
+}
 
+/* 
 public class JSONParser {
 
     static public List<FeedsData> parseJsonFeedsDataFromJsonString(String jsonData) {
@@ -46,3 +47,4 @@ public class JSONParser {
     }
 
 }
+    */

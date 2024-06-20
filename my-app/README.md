@@ -43,7 +43,7 @@ SPARK_WORKER_MEMORY=2g
 - Despues de procesar los datos, los reunimos con .collect().
 3) **Los Articles pueden escribir la descripcion en un archivo de texto.**
 
-
+HAY QUE HACER SPARK-SUBMIT DESDE LA CARPETA DEL PROYECTO!!!
 ### Decisiones Particulares
 1) Decidimos que los articulos solo escriban la descripcion de el articulo ya que no utilizamos el titulo en ningun lado y complicaria las cosas.
 

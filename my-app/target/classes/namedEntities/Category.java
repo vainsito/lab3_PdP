@@ -1,9 +1,10 @@
 package namedEntities;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 // Clase madre
-public class Category {
+public class Category implements Serializable{
     private String name_categorie;
     private HashMap<String, String> attributes;
 

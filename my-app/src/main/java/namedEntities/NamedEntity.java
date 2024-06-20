@@ -1,9 +1,10 @@
 package namedEntities;
 
 import java.util.List;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class NamedEntity {
+public class NamedEntity implements Serializable {
 
     private String entidad_nombrada;
     private Category category;

@@ -1,30 +1,5 @@
 
-/*import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.io.File;
-
-import feed.Article;
-import feed.FeedParser;
-import namedEntities.heuristics.Heuristic;
-import namedEntities.heuristics.makeHeuristic;
-
-import org.apache.spark.api.java.JavaPairRDD;
-import org.apache.spark.api.java.JavaRDD;
-import org.apache.spark.sql.SparkSession;
-
-import utils.Config;
-import utils.FeedsData;
-import utils.JSONParser;
-import utils.UserInterface;
-import utils.NamedEntitiesUtils;
-import utils.ArticleListMaker;*/
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.IOException;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.File;
@@ -49,7 +24,7 @@ import utils.ArticleListMaker;
 
 public class App { 
 
-    /*public static void main(String[] args) {
+    public static void main(String[] args) {
         
         List<FeedsData> feedsDataArray = new ArrayList<>();
         try {
@@ -64,35 +39,8 @@ public class App {
         Config config = ui.handleInput(args);
 
         run(config, feedsDataArray);
-    }*/
-
-    public static void main(String[] args) {
-        
-        List<FeedsData> feedsDataArray = new ArrayList<>();
-        
-        try {
-            InputStream is = App.class.getResourceAsStream("/data/feeds.json");
-            if (is == null) {
-                throw new FileNotFoundException("Cannot find resource: data/feeds.json");
-            }
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                sb.append(line);
-            }
-            String jsonContent = sb.toString();
-            feedsDataArray = JSONParser.parseJsonFeedsDataFromJsonString(jsonContent);
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-
-        UserInterface ui = new UserInterface();
-        Config config = ui.handleInput(args);
-
-        run(config, feedsDataArray);
     }
+    
 
     // TODO: Change the signature of this function if needed
     private static void run(Config config, List<FeedsData> feedsDataArray) {
@@ -110,11 +58,14 @@ public class App {
         // <> archivo para guardar los articulos
         File archivo = new File("src/data/bigdata.txt");
         try{
+            // Crear el directorio si no existe
+            archivo.getParentFile().mkdirs();
             if (!archivo.exists()) {
                 archivo.createNewFile();
             }
         } catch (IOException e) {
             System.err.println("An error while creating the file");
+            e.printStackTrace();
         }
         List<Article> allArticles = ArticleListMaker.makeArticleList(config, feedsDataArray);
         // <> Esto tambien guarda las descripciones en resources/bigdata.txt
@@ -144,7 +95,7 @@ public class App {
             
             NamedEntitiesUtils entities_sorted = new NamedEntitiesUtils();
             entities_sorted.sortEntities(lines, config.getHeuristicConfig());
-            
+            spark.stop();
 
             System.out.println("\nStats: ");
             System.out.println("-".repeat(80));
@@ -156,7 +107,7 @@ public class App {
                 System.exit(1);
             }
   
-            spark.stop();
+            
         }
 
     }
