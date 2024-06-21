@@ -52,7 +52,7 @@ public class App {
         // <> archivo para guardar la descripcion de los articulos
         FileMaker.createFile("src/main/java/data/bigdata.txt");
 
-        // <> Esto tambien guarda las descripciones en resources/bigdata.txt
+        // <> Esto tambien guarda las descripciones en bigdata.txt
         List<Article> allArticles = ArticleListMaker.makeArticleList(config, feedsDataArray);
         
         
@@ -63,7 +63,6 @@ public class App {
                 article.prettyPrint();
             }
         }
-        /////////////////////////////////////////////////////////////////////////////////////////////////
         
         if (config.getComputeNamedEntities()) {
             SparkSession spark = SparkSession

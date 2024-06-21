@@ -15,13 +15,8 @@ import java.util.stream.Stream; // Importamos Stream para poder usarlo en el met
 public class FeedParser {
 
     public static List<Article> parseXML(String xmlData) {
-        // La idea es que tenemos un string con toda la data, y tenemos que ir
-        // matcheando cosas
-        // Primero tenemos que matchear el tag <item> y luego matchear los tags <title>,
-        // <description>, <pubDate>, <link>
-        // Usamos un for para recorrer el string y matchear los tags
-        // Entonces, tenemos que hacer un split por <item> y luego por cada uno de esos
-        // splits, matchear los tags
+    
+
         List<Article> res = new ArrayList<>();
 
         try {
@@ -40,7 +35,6 @@ public class FeedParser {
                 }
             }
 
-            // If por si res no contiene nada
             if (res.size() == 0) {
                 System.out.println("No se encontraron articulos");
                 System.exit(1);
@@ -62,9 +56,6 @@ public class FeedParser {
         connection.setRequestMethod("GET");
         connection.setRequestProperty("Content-Type", "application/json");
 
-        // TODO: Cambiar el user-agent al nombre de su grupo.
-        // Si todos los grupos usan el mismo user-agent, el servidor puede bloquear las
-        // solicitudes.
         connection.setRequestProperty("user_agent", "Grupo_00_Lab2_2024");
         connection.setConnectTimeout(5000);
         connection.setReadTimeout(5000);

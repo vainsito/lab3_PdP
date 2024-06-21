@@ -24,6 +24,7 @@ import namedEntities.heuristics.Heuristic;
 import namedEntities.heuristics.makeHeuristic;
 
 // Clase que se encarga de ordenar las entidades y de imprimir las estadistica
+
 public class NamedEntitiesUtils implements Serializable{
     // Map para almacenar las named entities recolectadas de los workers
     private Map<String, NamedEntity> namedEntities;
@@ -32,10 +33,10 @@ public class NamedEntitiesUtils implements Serializable{
     private Map<String, NamedEntity> namedEntitiesTemp;
 
     // Set para almacenar las categorias existentes
-    private Set<String> categoriesSet; // <> Mejor Nombre
+    private Set<String> categoriesSet; 
 
     // Set para almacenar los tópicos existentes
-    private Set<String> topicsSet; // <> Mejor Nombre
+    private Set<String> topicsSet; 
 
     // Constructor
     public NamedEntitiesUtils() {
@@ -46,7 +47,6 @@ public class NamedEntitiesUtils implements Serializable{
     }
 
     // Metodos
-
 
     public void sortEntities(JavaRDD<String> lines, String heuristic) {
 
@@ -67,10 +67,9 @@ public class NamedEntitiesUtils implements Serializable{
             // Usar Jackson para parsear el contenido JSON
             ObjectMapper mapper = new ObjectMapper();
             List<Map<String, Object>> mapEntries = mapper.readValue(content, new TypeReference<List<Map<String, Object>>>(){});
-            // <> Mejor Nombre
             JavaRDD<NamedEntity> namedEntitiesRDD = candidatos.map(candidate -> {
                 NamedEntity namedEntity = null;
-                for (Map<String, Object> entry : mapEntries) { // <> Mejor Nombre
+                for (Map<String, Object> entry : mapEntries) { 
                     if (entry.containsKey("keywords")) {
                         List<String> keywordList = (List<String>) entry.get("keywords");
                         for (String keyword : keywordList) {
@@ -112,15 +111,13 @@ public class NamedEntitiesUtils implements Serializable{
             // <> Se utiliza el temp para no tener que hacer cambios drasticos en el codigo del lab 2.
 
             // Recoger los resultados y agregarlos a namedEntities
-            // <> Ahora mas elegante
+
             List<NamedEntity> namedEntitiesList = namedEntitiesRDD.collect();
             namedEntitiesList.forEach(namedEntity -> {
                 namedEntities.put(namedEntity.getName(), namedEntity);
                 categoriesSet.add(namedEntity.getCategory().getName());
                 namedEntity.getTopics().forEach(topic -> topicsSet.add(topic.getName()));
             });
-
-            // <> Ahora usa printNamedEntities en App.java
     
         } catch (IOException e) {
             e.printStackTrace();
@@ -135,8 +132,6 @@ public class NamedEntitiesUtils implements Serializable{
         }
     }
 
-    // Metodo para imprimir las estadisticas de repetición de las entidades
-    // nombradas
 
     public void printStats(String statsSelected) {
         // Si statsSelected es "cat" se imprimen las repeticiones de las entidades

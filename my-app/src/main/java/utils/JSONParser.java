@@ -28,23 +28,3 @@ public class JSONParser implements Serializable{
     }
 
 }
-
-/* 
-public class JSONParser {
-
-    static public List<FeedsData> parseJsonFeedsDataFromJsonString(String jsonData) {
-        List<FeedsData> feedsList = new ArrayList<>();
-
-        JSONArray jsonArray = new JSONArray(jsonData);
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            String label = jsonObject.getString("label");
-            String url = jsonObject.getString("url");
-            String type = jsonObject.getString("type");
-            feedsList.add(new FeedsData(label, url, type));
-        }
-        return feedsList;
-    }
-
-}
-    */
