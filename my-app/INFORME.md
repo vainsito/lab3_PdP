@@ -66,3 +66,31 @@ Si tuvieramos que destacar algo que nos costo de este laboratorio fue explorar e
 
 # 4. Extras
 Completar si hacen algo.
+
+Changelog:
+- App.java mas bonito:
+    > nuevo .java para crear el archivo
+    > printHelp a otro .java, lo recomendaba el comentario
+    > borre un par de cosas que quedaron de versiones anteriores
+- bigdata ya no crece infinitamente:
+    > si el archivo ya existe borro el contenido
+
+Dato:
+- NamedEntitiesUtils ya no usa el bool found por que hace namedEntity = null
+  que si sigue null significa que no la encontraron. Muy inteligente el chatGTP.
+
+- Hice que el bigdata.txt se creara dentro de main/java. 
+  Funciona, pero al hacer mvn clean install se mete el bigdata.txt en
+  target/classes/data, y la verdad no se si cambia algo eso.
+  Queda MUY feo que se haga una nueva carpeta en src/data en vez de usar la carpeta src/main/java/data
+  es muy ChatGTP en mi opinion. 
+
+PROBLEMA:
+- No printea las stats... Me fije y dentro de printStats el argumento statsSelected esta BIEN, lo imprimi
+  y es 'cat' ya que no le puse ningun argumento.
+  cada NamedEntity tiene sus categories y topics bien.
+  importante: Los prints dentro de el foreach del JavaRDD no aparecen en la terminal
+  Aparecen en la pagina del master, medio raro de encontrar, anda al CompletedOperation mas recente
+  y te fijas en el stdout de alguno de los dos workers. es raro por que algunos no dicen nada.
+  EN FIN. En un log que vi solo entro una vez al print "at least i enter here" pero nunca entro ni si quiera al isNewEntity. 
+  Esto es raro por que si no entra ahi entonces nunca añade nada al NamedEntities, pero esto si ocurre xD

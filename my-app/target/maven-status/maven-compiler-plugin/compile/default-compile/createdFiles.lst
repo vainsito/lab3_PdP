@@ -6,6 +6,7 @@ App.class
 utils/NamedEntitiesUtils.class
 utils/UserInterface.class
 utils/ArticleListMaker.class
+utils/HelpPrinter.class
 utils/Option.class
 namedEntities/heuristics/Heuristic.class
 utils/Config.class
@@ -13,4 +14,5 @@ namedEntities/heuristics/makeHeuristic.class
 feed/FeedParser.class
 namedEntities/Topics.class
 namedEntities/NamedEntity.class
+utils/FileMaker.class
 utils/JSONParser.class

@@ -36,8 +36,7 @@ public class FeedParser {
                     String link = item.split("<link>")[1].split("</link>")[0];
                     Article article = new Article(title, description, pubDate, link);
                     res.add(article);
-                    article.writeDescriptionToFile("src/data/bigdata.txt");
-                    
+                    article.writeDescriptionToFile("src/main/java/data/bigdata.txt");
                 }
             }
 

@@ -49,8 +49,8 @@ public class Article {
         System.out.println("*****************************************************************************************");
     }
 
-    public void writeDescriptionToFile(String filePath) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
+    public void writeDescriptionToFile(String Path) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(Path, true))) {
             writer.write(description);
             writer.newLine();
         } catch (IOException e) {

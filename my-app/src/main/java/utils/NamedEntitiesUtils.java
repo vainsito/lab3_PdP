@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,15 +14,9 @@ import org.apache.spark.api.java.JavaRDD;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.HashSet;
-import java.util.Iterator;
 
-import feed.Article;
 import namedEntities.Category;
 import namedEntities.NamedEntity;
 import namedEntities.Topics;
@@ -54,6 +47,7 @@ public class NamedEntitiesUtils implements Serializable{
 
         Heuristic heuristica = new makeHeuristic();
         JavaRDD<String> candidatos = null;
+        
     
         try{
             candidatos = heuristica.extractCandidates(lines, heuristic);
@@ -68,20 +62,25 @@ public class NamedEntitiesUtils implements Serializable{
             // Usar Jackson para parsear el contenido JSON
             ObjectMapper mapper = new ObjectMapper();
             List<Map<String, Object>> jsonArray = mapper.readValue(content, new TypeReference<List<Map<String, Object>>>(){});
-    
+            System.out.println("\nprints work outside the JavaRDD\n");
             JavaRDD<NamedEntity> namedEntitiesRDD = candidatos.map(candidate -> {
                 NamedEntity namedEntity = null;
+                System.out.println("\nprints work inside the JavaRDD\n");
                 for (Map<String, Object> jsonObject : jsonArray) {
+                    System.out.println("\nWHAT IS HAPPENING\n");
                     if (jsonObject.containsKey("keywords")) {
                         List<String> keywords = (List<String>) jsonObject.get("keywords");
                         for (String keyword : keywords) {
+                            System.out.println("\nTHIS IS CRAZY\n");
                             if (keyword.equalsIgnoreCase(candidate)) {
-                                synchronized (namedEntities) {
                                     boolean isNewEntity = false;
+
                                     if (namedEntities.containsKey(candidate)) {
+                                        System.out.println("\nAT LEAST I ENTER HERE\n");
                                         namedEntity = namedEntities.get(candidate);
                                         namedEntity.incrementRepetitions();
                                     } else {
+                                        System.out.println("\n\nIs New Entity\n\n");
                                         Category category_entity = new Category((String) jsonObject.get("Category"));
                                         namedEntity = new NamedEntity(category_entity, (String) jsonObject.get("label"));
                                         namedEntities.put(candidate, namedEntity);
@@ -90,6 +89,7 @@ public class NamedEntitiesUtils implements Serializable{
                                     }
     
                                     if (jsonObject.containsKey("Topics") && isNewEntity) {
+                                        System.out.println("\n\nTopics\n\n");
                                         List<String> topics_entity = (List<String>) jsonObject.get("Topics");
                                         for (String topic : topics_entity) {
                                             Topics topico = new Topics(topic);
@@ -97,7 +97,6 @@ public class NamedEntitiesUtils implements Serializable{
                                             topics.add(topico.getName());
                                         }
                                     }
-                                }
                                 break;
                             }
                         }
@@ -129,80 +128,6 @@ public class NamedEntitiesUtils implements Serializable{
             System.exit(1);
         }
     }
-    /* 
-    public void sortEntities(JavaRDD<String> lines, String heuristic) {
-
-        Heuristic heuristica = new makeHeuristic();
-        JavaRDD<String> candidatos = null;
-    
-        try{
-            candidatos = heuristica.extractCandidates(lines, heuristic);
-        } catch (IllegalArgumentException e) {
-            System.exit(1);
-        } 
-    
-        try { 
-            String content = new String(Files.readAllBytes(Paths.get("target/classes/data/dictionary.json")),
-                    StandardCharsets.UTF_8);
-    
-            // Usar Jackson para parsear el contenido JSON
-            ObjectMapper mapper = new ObjectMapper();
-            List<Map<String, Object>> jsonArray = mapper.readValue(content, new TypeReference<List<Map<String, Object>>>(){});
-            candidatos.foreach(candidate -> {
-                boolean found = false;
-                for (Map<String, Object> jsonObject : jsonArray) {
-                    found = false;
-                    if (jsonObject.containsKey("keywords")) {
-                        List<String> keywords = (List<String>) jsonObject.get("keywords");
-                        for (String keyword : keywords) {
-                            if (keyword.equalsIgnoreCase(candidate)) {
-                                    NamedEntity namedEntity;
-                                    boolean isNewEntity = false;
-                                    if (namedEntities.containsKey(candidate)) {
-                                        namedEntity = namedEntities.get(candidate);
-                                        namedEntity.incrementRepetitions();
-                                    } else {
-                                        Category category_entity = new Category((String) jsonObject.get("Category"));
-                                        namedEntity = new NamedEntity(category_entity, (String) jsonObject.get("label"));
-                                        namedEntities.put(candidate, namedEntity);
-                                        categories.add(category_entity.getName());
-                                        isNewEntity = true;
-                                    }
-    
-                                    if (jsonObject.containsKey("Topics") && isNewEntity) {
-                                        List<String> topics_entity = (List<String>) jsonObject.get("Topics");
-                                        for (String topic : topics_entity) {
-                                            Topics topico = new Topics(topic);
-                                            namedEntity.addTopic(topico);
-                                            topics.add(topico.getName());
-                                        }
-                                    }
-                                found = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-                if (!found && !this.namedEntities.containsKey(candidate)) {
-                    NamedEntity namedEntity = new NamedEntity(new Category("OTHER"), candidate);
-                    namedEntity.addTopic(new Topics("OTHER"));
-                    this.namedEntities.put(candidate, namedEntity);
-                    this.categories.add("OTHER");
-                    this.topics.add("OTHER");
-                }
-            });
-    
-            // Imprimir las entidades nombradas
-            for (NamedEntity namedEntity : this.namedEntities.values()) {
-                namedEntity.namedEntityPrint();
-            }
-    
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-    }
-    */
 
     // metodo para imprimir las entidades nombradas
     public void printNamedEntities() {
@@ -219,6 +144,7 @@ public class NamedEntitiesUtils implements Serializable{
         // nombradas por categoría
         // Si statsSelected es "top" se imprimen las repeticiones de las entidades
         // nombradas por tópico
+
 
         if (statsSelected.equals("cat")) {
             for (String category : this.categories) {

@@ -27,7 +27,10 @@ public class ArticleListMaker {
             } else {
                 try {
                     String contenido = FeedParser.fetchFeed(feedData.getUrl());
+                    
+                    // <> Aqui se añaden los articulos al .txt
                     List<Article> articles = FeedParser.parseXML(contenido);
+
                     res.addAll(articles);
                 } catch (Exception e) {
                     System.out.println("Error fetching feed: " + feedData.getLabel());
