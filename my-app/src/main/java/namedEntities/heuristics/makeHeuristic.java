@@ -23,9 +23,6 @@ public class makeHeuristic implements Heuristic, Serializable {
                 case "acronym":
                     heuristic_result = "[A-Z]{3,5}";
                     break;
-                case "preceded":
-                    heuristic_result = "(?:Sr\\\\.|Sra\\\\.|Dr\\\\.|Dra\\\\.|Lic\\\\.|Ing\\\\.|el|El|la|La|los|Los|las|Las|yo|tu|ella|nosotros|vosotros|ellos|ellas)\\\\s([A-Z][a-z]+(?:\\\\s[A-Z][a-z]+)?)";
-                    break;
                 case "capitalized":
                     heuristic_result = "[A-Z][a-z]+(?:\\\\s[A-Z][a-z]+)*";
                     break;

@@ -17,7 +17,6 @@ public class HelpPrinter {
         System.out.println("                                       named entities");
         System.out.println("                                       Available heuristic names are:");
         System.out.println("                                           - acronym: Acronym-based heuristic");
-        System.out.println("                                           - preceded: Preceded word heuristic");
         System.out.println("                                           - capitalized: Capitalized word heuristic");
         System.out.println("  -pf, --print-feed:                   Print the fetched feed");
         System.out.println("  -sf, --stats-format <format>:        Print the stats in the specified format");
