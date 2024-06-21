@@ -4,11 +4,11 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>Lab3_grupo02</groupId>
-  <artifactId>Lab03g02</artifactId>
+  <groupId>Lab3_grupo07</groupId>
+  <artifactId>Lab03g07</artifactId>
   <version>0.1</version>
 
-  <name>WordCount</name>
+  <name>Lab3</name>
   <url>https://docs.google.com/document/d/e/2PACX-1vQn5BpCPQ6jKMN-sz46261Qot82KbDZ1RUx8jNzAN4kBEAq_i97T3R6ZA0_yRA5elN66e-EArXQXuAh/pub</url>
 
   <properties>

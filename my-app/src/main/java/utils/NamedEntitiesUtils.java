@@ -25,19 +25,24 @@ import namedEntities.heuristics.makeHeuristic;
 
 // Clase que se encarga de ordenar las entidades y de imprimir las estadistica
 public class NamedEntitiesUtils implements Serializable{
+    // Map para almacenar las named entities recolectadas de los workers
     private Map<String, NamedEntity> namedEntities;
 
+    // Map para almacenar temporalmente las named entities de cada worker
+    private Map<String, NamedEntity> namedEntitiesTemp;
+
     // Set para almacenar las categorias existentes
-    private Set<String> categories;
+    private Set<String> categoriesSet; // <> Mejor Nombre
 
     // Set para almacenar los tópicos existentes
-    private Set<String> topics;
+    private Set<String> topicsSet; // <> Mejor Nombre
 
     // Constructor
     public NamedEntitiesUtils() {
         this.namedEntities = new HashMap<>();
-        this.categories = new HashSet<>();
-        this.topics = new HashSet<>();
+        this.categoriesSet = new HashSet<>();
+        this.topicsSet = new HashSet<>();
+        this.namedEntitiesTemp = new HashMap<>();
     }
 
     // Metodos
@@ -61,40 +66,32 @@ public class NamedEntitiesUtils implements Serializable{
     
             // Usar Jackson para parsear el contenido JSON
             ObjectMapper mapper = new ObjectMapper();
-            List<Map<String, Object>> jsonArray = mapper.readValue(content, new TypeReference<List<Map<String, Object>>>(){});
-            System.out.println("\nprints work outside the JavaRDD\n");
+            List<Map<String, Object>> mapEntries = mapper.readValue(content, new TypeReference<List<Map<String, Object>>>(){});
+            // <> Mejor Nombre
             JavaRDD<NamedEntity> namedEntitiesRDD = candidatos.map(candidate -> {
                 NamedEntity namedEntity = null;
-                System.out.println("\nprints work inside the JavaRDD\n");
-                for (Map<String, Object> jsonObject : jsonArray) {
-                    System.out.println("\nWHAT IS HAPPENING\n");
-                    if (jsonObject.containsKey("keywords")) {
-                        List<String> keywords = (List<String>) jsonObject.get("keywords");
-                        for (String keyword : keywords) {
-                            System.out.println("\nTHIS IS CRAZY\n");
+                for (Map<String, Object> entry : mapEntries) { // <> Mejor Nombre
+                    if (entry.containsKey("keywords")) {
+                        List<String> keywordList = (List<String>) entry.get("keywords");
+                        for (String keyword : keywordList) {
                             if (keyword.equalsIgnoreCase(candidate)) {
                                     boolean isNewEntity = false;
 
-                                    if (namedEntities.containsKey(candidate)) {
-                                        System.out.println("\nAT LEAST I ENTER HERE\n");
-                                        namedEntity = namedEntities.get(candidate);
+                                    if (namedEntitiesTemp.containsKey(candidate)) {
+                                        namedEntity = namedEntitiesTemp.get(candidate);
                                         namedEntity.incrementRepetitions();
                                     } else {
-                                        System.out.println("\n\nIs New Entity\n\n");
-                                        Category category_entity = new Category((String) jsonObject.get("Category"));
-                                        namedEntity = new NamedEntity(category_entity, (String) jsonObject.get("label"));
-                                        namedEntities.put(candidate, namedEntity);
-                                        categories.add(category_entity.getName());
+                                        Category category_entity = new Category((String) entry.get("Category"));
+                                        namedEntity = new NamedEntity(category_entity, (String) entry.get("label"));
+                                        namedEntitiesTemp.put(candidate, namedEntity);
                                         isNewEntity = true;
                                     }
     
-                                    if (jsonObject.containsKey("Topics") && isNewEntity) {
-                                        System.out.println("\n\nTopics\n\n");
-                                        List<String> topics_entity = (List<String>) jsonObject.get("Topics");
+                                    if (entry.containsKey("Topics") && isNewEntity) {
+                                        List<String> topics_entity = (List<String>) entry.get("Topics");
                                         for (String topic : topics_entity) {
                                             Topics topico = new Topics(topic);
                                             namedEntity.addTopic(topico);
-                                            topics.add(topico.getName());
                                         }
                                     }
                                 break;
@@ -106,22 +103,24 @@ public class NamedEntitiesUtils implements Serializable{
                     namedEntity = new NamedEntity(new Category("OTHER"), candidate);
                     namedEntity.addTopic(new Topics("OTHER"));
                     this.namedEntities.put(candidate, namedEntity);
-                    this.categories.add("OTHER");
-                    this.topics.add("OTHER");
+                    this.categoriesSet.add("OTHER");
+                    this.topicsSet.add("OTHER");
                 }
                 return namedEntity;
             });
     
+            // <> Se utiliza el temp para no tener que hacer cambios drasticos en el codigo del lab 2.
+
             // Recoger los resultados y agregarlos a namedEntities
+            // <> Ahora mas elegante
             List<NamedEntity> namedEntitiesList = namedEntitiesRDD.collect();
-            for (NamedEntity namedEntity : namedEntitiesList) {
+            namedEntitiesList.forEach(namedEntity -> {
                 namedEntities.put(namedEntity.getName(), namedEntity);
-            }
-    
-            // Imprimir las entidades nombradas
-            for (NamedEntity namedEntity : this.namedEntities.values()) {
-                namedEntity.namedEntityPrint();
-            }
+                categoriesSet.add(namedEntity.getCategory().getName());
+                namedEntity.getTopics().forEach(topic -> topicsSet.add(topic.getName()));
+            });
+
+            // <> Ahora usa printNamedEntities en App.java
     
         } catch (IOException e) {
             e.printStackTrace();
@@ -144,10 +143,8 @@ public class NamedEntitiesUtils implements Serializable{
         // nombradas por categoría
         // Si statsSelected es "top" se imprimen las repeticiones de las entidades
         // nombradas por tópico
-
-
         if (statsSelected.equals("cat")) {
-            for (String category : this.categories) {
+            for (String category : this.categoriesSet) {
                 System.out.println("Category: " + category);
                 for (NamedEntity namedEntity : this.namedEntities.values()) {
                     if (namedEntity.getCategory().getName().equals(category)) {
@@ -156,7 +153,7 @@ public class NamedEntitiesUtils implements Serializable{
                 }
             }
         } else if (statsSelected.equals("top")) {
-            for (String topic : this.topics) {
+            for (String topic : this.topicsSet) {
                 System.out.println("Topic: " + topic);
                 for (NamedEntity namedEntity : this.namedEntities.values()) {
                     for (Topics t : namedEntity.getTopics()) {

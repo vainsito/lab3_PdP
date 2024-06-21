@@ -76,7 +76,7 @@ public class App {
             
             NamedEntitiesUtils entities_sorted = new NamedEntitiesUtils();
             entities_sorted.sortEntities(lines, config.getHeuristicConfig());
-            
+            entities_sorted.printNamedEntities();
 
             System.out.println("\nStats: ");
             System.out.println("-".repeat(80));
