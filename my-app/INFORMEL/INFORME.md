@@ -184,7 +184,7 @@ Tambien, para mejorar la comprension del codigo, cambiamos nombres de variables 
 ### En spark:
 ---
 
-![Tiempo](/imgs/tiempo.PNG)
+![Tiempo](imgs/tiempo.PNG)
 
 ### En el laboratorio 2:
 --- 
