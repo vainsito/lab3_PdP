@@ -18,6 +18,7 @@
     - [Cambios en NamedEntitiesUtils.java](#cambios-en-namedentitiesutilsjava).
 - [Dificultades que tuvimos en el Laboratorio](#dificultades-que-tuvimos-en-el-laboratorio).
 - [Punto Estrella](#puntos-estrella).
+- [Conclusion sobre el trabajo de SPARK](#conclusion-sobre-el-trabajo-de-spark).
 - [Experiencia con el Laboratorio](#experiencia-con-el-laboratorio).
 
 ## Introduccion
@@ -202,6 +203,37 @@ Tambien, para mejorar la comprension del codigo, cambiamos nombres de variables 
 La diferencia radica en que Spark está haciendo un gran trabajo con un archivo de bigdata.txt relativamente pequeño (junta de los feeds). Esto es algo que el código implementado en el proyecto anterior podría manejar con mayor facilidad.
 
 Sin embargo, si estuviéramos trabajando con un archivo más grande, nuestra última implementación tendría un tiempo de procesamiento menor gracias a la computación en paralelo que ofrece el framework.
+
+## Conclusion sobre el trabajo de SPARK
+
+Con los resultados obtenidos tras testear nuestra implementacion 
+Llamemos :
+
+- *spark_time* = Header de correr el programa con spark es un tiempo constante.
+- *local_run* = Retardo de nuestro programa corriendolo localmente como en el lab2  que es proporcional a la cantidad de palabras que tenga la big data que estamos tratando.
+- *workers_run* : tiempo que tarda los workers en realizar el trabajo que se va a llamar(este tiempo es proporcional a la cantidad de workers) 
+
+Con todo esto podemos armar algo cercano a una ecuacion de tiempo teniendo a **n como tamaño de texto**.
+
+### Archivos chicos 
+--- 
+**Laboratorio 2 :**
+>*local_run* * n
+
+**Laboratorio 3 :** 
+>*spark_time* + *workers_run* * n/(variable proporcional a cantidad de workers)
+
+Ese tiempo costante del spark_time hace que el trabajo demore mas que el lab2 porque aunque el tiempo actual de trabajo es menor ese header por la preparacion y funcionamiento de spark lo hace mas lento.
+
+### Archivos grandes
+--- 
+**Laboratorio 2 :** 
+>*local_run* * n^3
+
+**Laboratorio 3 :** 
+>*spark_time* + *workers_run* * n^3/(variable proporcioanl a cantidad de workers)
+
+Algo digno de mencionar es que teniendo un archivo considerablemente mas grande **el overhead de spark sigue constante** pero el trabajo es mucho menor en comparacion, ya que la computacion se divide en los workers.
 
 ## Experiencia con el Laboratorio
 
