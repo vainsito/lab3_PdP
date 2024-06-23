@@ -11,6 +11,9 @@
 - [Introduccion](#introduccion).
 - [Implementacion](#implementacion).
 - [Compilacion](#compilacion).
+    - [Instalacion de SPARK](#instalacion-de-spark-).
+    - [Inicializacion del cluster](#inicializacion-de-cluster-).
+    - [Compilacion en maven](#compilacion-en-maven-).
 - [Cambios Respecto al Laboratorio 2](#cambios-respecto-al-laboratorio-2).
     - [Cambios en NamedEntitiesUtils.java](#cambios-en-namedentitiesutilsjava).
 - [Dificultades que tuvimos en el Laboratorio](#dificultades-que-tuvimos-en-el-laboratorio).
@@ -54,7 +57,13 @@ Osea que, con respecto al laboratorio 2, lo que vamos a agregar sera el inicio d
 
 ## Compilacion
 
-Esta es la parte mas engorrosa, asi que vamos a explicarla detalladamente para que nada pueda salir mal :
+Esta es la parte mas engorrosa, asi que vamos a explicarla detalladamente para que nada pueda salir mal.
+
+### Instalacion de SPARK :
+
+1. Descargar Apache Spark (spark-3.5.1-bin-hadoop3.tgz) del sitio : https://spark.apache.org/downloads.html.
+ 
+2. Descomprimir el archivo descargado en algún directorio de su disco (${SPARK_FOLDER}).
 
 ### Inicializacion de cluster :
 
@@ -175,8 +184,8 @@ Tambien, para mejorar la comprension del codigo, cambiamos nombres de variables 
 
 - **Uso de la API de spark**, ya que nunca trabajamos con ella, investigar sus metodos nos llevo un tiempo.
 
-- **Adaptar el codigo para uso de SPARK** fue una tarea ardua y compleja, claramente SPARK va a tener sus propios requerimientos de trabajo, pero no pensamos tener que hacer un cambio tan drastico para complacer al framework.
-    - El hecho de no pensar como trabajaba el master y cada uno de los workers con nuestras variables privadas de la clase, supuso un aumento significativo en la dificultad del laboratorio, ya que en esto fue en lo que mas nos trabamos.
+- **Adaptar el código para el uso de Spark** fue una tarea ardua y compleja. Si bien Spark tiene sus propios requerimientos de trabajo, no anticipamos tener que hacer un cambio tan drástico para satisfacer las necesidades del framework.
+    - El hecho de no considerar cómo interactuaban el maestro y los trabajadores con nuestras variables privadas de la clase incrementó significativamente la dificultad del laboratorio, ya que fue en este aspecto donde más nos encontramos con obstáculos.
 
 
 ## Punto estrella (Medicion de tiempo)
@@ -190,8 +199,9 @@ Tambien, para mejorar la comprension del codigo, cambiamos nombres de variables 
 --- 
 ![Laboratorio2](imgs/l2.png)
 
-La diferencia radica en que SPARK esta haciendo un gran trabajo para, en este caso, un bigdata.txt realtivamente pequeño (junte de los feeds). Esto es algo de lo que el codigo implementado en el anterior proyecto, se puede encargar con mayor facilidad.
-Sin embargo, si estuvieramos trabajando con un archivo mayor, nuestra ultima implementacion tendria un tiempo pequeño gracias a la computacion en paralelo que ofrece el framework.
+La diferencia radica en que Spark está haciendo un gran trabajo con un archivo de bigdata.txt relativamente pequeño (junta de los feeds). Esto es algo que el código implementado en el proyecto anterior podría manejar con mayor facilidad.
+
+Sin embargo, si estuviéramos trabajando con un archivo más grande, nuestra última implementación tendría un tiempo de procesamiento menor gracias a la computación en paralelo que ofrece el framework.
 
 ## Experiencia con el Laboratorio
 
