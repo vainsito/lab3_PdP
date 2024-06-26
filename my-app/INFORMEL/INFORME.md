@@ -47,7 +47,7 @@ Donde:
 - **"JavaRDD<String> lines = spark.read().textFile("src/main/java/data/bigdata.txt").javaRDD();" :** Leemos el archivo de texto llamado bigdata.txt y lo convertimos en un JavaRDD de lineas de texto. (Esta conveniencia la explicamos en [Cambios Respecto al Laboratorio 2](#cambios-respecto-al-laboratorio-2)).
 
 - **"NamedEntitiesUtils entities_sorted = new NamedEntitiesUtils();
-entities_sorted.sortEntities(lines, config.getHeuristicConfig());" :** Creamos una instancia de NamedEntitiesUtils y utilizamos meotodo sortEntities para ordenar las entidades nombradas en lines, segun la heuristica especificada en la configuracion. Una vez realizado imprimimos las entidades con printNamedEntities();
+entities_sorted.sortEntities(lines, config.getHeuristicConfig());" :** Creamos una instancia de NamedEntitiesUtils y utilizamos metodo sortEntities para ordenar las entidades nombradas en lines, segun la heuristica especificada en la configuracion. Una vez realizado imprimimos las entidades con printNamedEntities();
 
 - **Bloque try :** Imprimimos las estadisticas segun como se seleccione en la configuracion.
 
